@@ -34,6 +34,7 @@ laser_speed = 6
 
 score = 0
 lives = 3
+game_over = False
 
 score_display = turtle.Turtle()
 score_display.hideturtle()
@@ -55,25 +56,25 @@ update_score_display()
 
 
 def move_up():
-  if player.ycor() < 240:
+  if not game_over and player.ycor() < 240:
     player.setheading(90)
     player.sety(player.ycor() + 20)
 
 
 def move_down():
-  if player.ycor() > -250:
+  if not game_over and player.ycor() > -250:
     player.setheading(270)
     player.sety(player.ycor() - 20)
 
 
 def move_left():
-  if player.xcor() > -320:
+  if not game_over and player.xcor() > -320:
     player.setheading(180)
     player.setx(player.xcor() - 20)
 
 
 def move_right():
-  if player.xcor() < 320:
+  if not game_over and player.xcor() < 320:
     player.setheading(0)
     player.setx(player.xcor() + 20)
 
@@ -86,7 +87,7 @@ screen.onkey(move_right, "Right")
 
 
 def game_loop():
-  global score, lives
+  global score, lives, game_over
 
   laser.setx(laser.xcor() + laser_speed)
   if laser.xcor() > 370:
@@ -97,6 +98,8 @@ def game_loop():
     update_score_display()
     player.goto(0, -240)
     player.setheading(90)
+    if lives <= 0:
+      game_over = True
 
   if player.ycor() >= 220:
     score += 1
