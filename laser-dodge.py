@@ -24,13 +24,17 @@ player.goto(0, -240)
 player.setheading(90)
 player.speed(0)
 
-laser = turtle.Turtle()
-laser.shape("square")
-laser.color("red")
-laser.shapesize(stretch_wid=0.6, stretch_len=3)
-laser.penup()
-laser.goto(-360, random.randint(-180, 180))
-laser_speed = 6
+lasers = []
+laser_speeds = [5, -6, 7, -5, 8]  # Positive = right, Negative = left
+
+for _ in range(len(laser_speeds)):
+  laser = turtle.Turtle()
+  laser.shape("square")
+  laser.color("red")
+  laser.shapesize(stretch_wid=0.6, stretch_len=3)
+  laser.penup()
+  laser.goto(random.randint(-250, 250), random.randint(-180, 180))
+  lasers.append(laser)
 
 score = 0
 lives = 3
@@ -90,17 +94,23 @@ def game_loop():
   global score, lives, game_over
 
   if not game_over:
-    laser.setx(laser.xcor() + laser_speed)
-    if laser.xcor() > 370:
-      laser.goto(-370, random.randint(-180, 180))
+    for i in range(len(lasers)):
+      laser = lasers[i]
+      speed = laser_speeds[i]
+      laser.setx(laser.xcor() + speed)
 
-    if player.distance(laser) < 25:
-      lives -= 1
-      update_score_display()
-      player.goto(0, -240)
-      player.setheading(90)
-      if lives <= 0:
-        game_over = True
+      if speed > 0 and laser.xcor() > 370:
+        laser.goto(-370, random.randint(-180, 180))
+      elif speed < 0 and laser.xcor() < -370:
+        laser.goto(370, random.randint(-180, 180))
+
+      if player.distance(laser) < 25:
+        lives -= 1
+        update_score_display()
+        player.goto(0, -240)
+        player.setheading(90)
+        if lives <= 0:
+          game_over = True
 
     if player.ycor() >= 220:
       score += 1
