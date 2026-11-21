@@ -33,6 +33,7 @@ laser.goto(-360, random.randint(-180, 180))
 laser_speed = 6
 
 score = 0
+lives = 3
 
 score_display = turtle.Turtle()
 score_display.hideturtle()
@@ -43,7 +44,11 @@ score_display.goto(0, 255)
 
 def update_score_display():
   score_display.clear()
-  score_display.write(f"Score: {score}", align="center", font=("Arial", 16, "bold"))
+  score_display.write(
+      f"Score: {score}   Lives: {lives}",
+      align="center",
+      font=("Arial", 16, "bold"),
+  )
 
 
 update_score_display()
@@ -81,13 +86,15 @@ screen.onkey(move_right, "Right")
 
 
 def game_loop():
-  global score
+  global score, lives
 
   laser.setx(laser.xcor() + laser_speed)
   if laser.xcor() > 370:
     laser.goto(-370, random.randint(-180, 180))
 
   if player.distance(laser) < 25:
+    lives -= 1
+    update_score_display()
     player.goto(0, -240)
     player.setheading(90)
 
