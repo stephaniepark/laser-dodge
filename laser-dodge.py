@@ -89,23 +89,24 @@ screen.onkey(move_right, "Right")
 def game_loop():
   global score, lives, game_over
 
-  laser.setx(laser.xcor() + laser_speed)
-  if laser.xcor() > 370:
-    laser.goto(-370, random.randint(-180, 180))
+  if not game_over:
+    laser.setx(laser.xcor() + laser_speed)
+    if laser.xcor() > 370:
+      laser.goto(-370, random.randint(-180, 180))
 
-  if player.distance(laser) < 25:
-    lives -= 1
-    update_score_display()
-    player.goto(0, -240)
-    player.setheading(90)
-    if lives <= 0:
-      game_over = True
+    if player.distance(laser) < 25:
+      lives -= 1
+      update_score_display()
+      player.goto(0, -240)
+      player.setheading(90)
+      if lives <= 0:
+        game_over = True
 
-  if player.ycor() >= 220:
-    score += 1
-    update_score_display()
-    player.goto(0, -240)
-    player.setheading(90)
+    if player.ycor() >= 220:
+      score += 1
+      update_score_display()
+      player.goto(0, -240)
+      player.setheading(90)
 
   screen.update()
   screen.ontimer(game_loop, 20)
