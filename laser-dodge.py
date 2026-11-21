@@ -108,8 +108,17 @@ def game_loop():
       player.goto(0, -240)
       player.setheading(90)
 
-  screen.update()
-  screen.ontimer(game_loop, 20)
+    screen.update()
+    screen.ontimer(game_loop, 20)
+  else:
+    score_display.clear()
+    score_display.goto(0, 0)
+    score_display.write(
+        f"GAME OVER! Final Score: {score}",
+        align="center",
+        font=("Arial", 24, "bold"),
+    )
+    screen.update()
 
 
 game_loop()
