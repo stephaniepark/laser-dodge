@@ -1,3 +1,4 @@
+import random
 import turtle
 
 screen = turtle.Screen()
@@ -22,6 +23,14 @@ player.penup()
 player.goto(0, -240)
 player.setheading(90)
 player.speed(0)
+
+laser = turtle.Turtle()
+laser.shape("square")
+laser.color("red")
+laser.shapesize(stretch_wid=0.6, stretch_len=3)
+laser.penup()
+laser.goto(-360, random.randint(-180, 180))
+laser_speed = 6
 
 score = 0
 
@@ -73,6 +82,14 @@ screen.onkey(move_right, "Right")
 
 def game_loop():
   global score
+
+  laser.setx(laser.xcor() + laser_speed)
+  if laser.xcor() > 370:
+    laser.goto(-370, random.randint(-180, 180))
+
+  if player.distance(laser) < 25:
+    player.goto(0, -240)
+    player.setheading(90)
 
   if player.ycor() >= 220:
     score += 1
